@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>5Chan</title>
+  </head>
+  <body>
+    <form
+      method="post"
+      action="/"
+      class="flex flex-col items-center justify-center h-screen"
+    >
+      {{ form.csrf_token }}
+      <div>{{ form.username(size=30) }}</div>
+      <div>{{ form.password(size=30) }}</div>
+      <button
+        type="submit"
+        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        Submit
+      </button>
+    </form>
+  </body>
+</html>

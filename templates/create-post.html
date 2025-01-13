@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Post</title>
+  </head>
+  <body>
+    <h1>Create your post</h1>
+    <div>
+      <form
+        method="post"
+        action="{{ url_for('createPost' )}}"
+        class="flex flex-col"
+      >
+        {{ form.title }} <br />
+        {{ form.body }} </br>
+        <button type="submit">Create post</button> </br>
+        <a href="{{ url_for('home') }}">Back to Home</a>
+      </form>
+    </div>
+  </body>
+</html>
