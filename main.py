@@ -22,10 +22,16 @@ class Base:
 
 
 app = Flask(__name__)
+
+# Configure SQLAlchemy
+app.config.update(
+    SQLALCHEMY_DATABASE_URI=os.getenv('DB_URI', 'sqlite:///posts_data.db'),
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    SECRET_KEY=os.getenv('FLASK_SECRET_KEY', 'default-key')
+)
+
 db = SQLAlchemy(model_class=Base)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DB_URI')
-db.init_app(app=app)
-app.secret_key = os.getenv('FLASK_SECRET_KEY')
+db.init_app(app)
 
 
 # Forms
