@@ -4,13 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .likes-section {
+        margin: 20px 0;
+      }
+
+      .like-button {
+        padding: 8px 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .like-button:hover:not(:disabled) {
+        background-color: #45a049;
+      }
+
+      .like-button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .liked {
+        background-color: #2196f3;
+      }
+    </style>
   </head>
   <body>
     <h1>Post Page</h1>
     <p>{{ title }}</p>
     <p>{{ body }}</p>
     <p>{{ comment }}</p>
-    <button>{{likes}}</button></br>
+    <div class="likes-section">
+      <button id="likeButton" onclick="likePost('{{id}}')" class="like-button">
+        Like
+      </button>
+      <span id="likes-count">{{likes}}</span> likes
+    </div>
     <a href="{{ url_for('viewPost') }}">Back to posts</a>
+    <script>
+      // Check if post is already liked when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch(`/api/check-like/{{id}}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.hasLiked) {
+              disableLikeButton(true);
+            }
+          });
+      });
+
+      function disableLikeButton(liked) {
+        const button = document.getElementById("likeButton");
+        button.disabled = true;
+        if (liked) {
+          button.classList.add("liked");
+          button.textContent = "Liked";
+        }
+      }
+
+      function likePost(postId) {
+        fetch(`/api/like/${postId}`, {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              document.getElementById("likes-count").textContent = data.likes;
+              disableLikeButton(true);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
   </body>
 </html>
