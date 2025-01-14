@@ -9,4 +9,6 @@ services:
       - ./instance:/app/instance
     env_file:
       - .env
+    environment:
+      - GUNICORN_CMD_ARGS="--access-logfile=- --error-logfile=- --reload"
     restart: always
