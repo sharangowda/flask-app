@@ -18,22 +18,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Create the instance directory
 RUN mkdir -p /app/instance && chmod 777 /app/instance
 
-# Copy the .env file first
-COPY .env .env
-
-# Copy the rest of the application
+# Copy the application files
 COPY . .
 
-# Expose port 8000
-EXPOSE 8000
+# Expose port 3000
+EXPOSE 3000
 
 # Set environment variables
 ENV FLASK_APP=main.py
-ENV FLASK_ENV=production
+ENV FLASK_ENV=development
 ENV PYTHONUNBUFFERED=1
-
-# Use gunicorn config file
-COPY gunicorn.conf.py .
+ENV FLASK_DEBUG=1
 
 # Run the application
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"] 
+CMD ["python", "main.py"] 
