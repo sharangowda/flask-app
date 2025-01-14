@@ -6,9 +6,11 @@ services:
     ports:
       - "80:5000"
     volumes:
-      - ./instance:/app/instance
+      - type: bind
+        source: ./instance
+        target: /app/instance
     env_file:
       - .env
     environment:
-      - GUNICORN_CMD_ARGS="--access-logfile=- --error-logfile=- --reload"
+      - GUNICORN_CMD_ARGS=--access-logfile=- --error-logfile=- --reload
     restart: always

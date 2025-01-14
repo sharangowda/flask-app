@@ -15,11 +15,11 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create the instance directory
+RUN mkdir -p /app/instance && chmod 777 /app/instance
+
 # Copy the rest of the application
 COPY . .
-
-# Create the instance directory for SQLite database
-RUN mkdir -p instance && chmod 777 instance
 
 # Expose port 5000
 EXPOSE 5000
@@ -28,5 +28,8 @@ EXPOSE 5000
 ENV FLASK_APP=main.py
 ENV FLASK_ENV=production
 
+# Use gunicorn config file
+COPY gunicorn.conf.py .
+
 # Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "wsgi:app"] 
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"] 
